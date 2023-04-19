@@ -1,3 +1,35 @@
+# grafana-volkovlabs-form-panel
+
+# 🚀 Data Manipulation Panel for @grafana 🚀
+
+
+https://github.com/coding-to-music/grafana-volkovlabs-form-panel
+
+From / By https://github.com/volkovlabs/volkovlabs-form-panel
+
+
+## Environment variables:
+
+```java
+
+```
+
+## user interfaces:
+
+- Grafana http://localhost:3000
+
+## GitHub
+
+```java
+git init
+git add .
+git remote remove origin
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:coding-to-music/grafana-volkovlabs-form-panel.git
+git push -u origin main
+```
+
 # Data Manipulation Panel for Grafana
 
 ![Form Panel](https://raw.githubusercontent.com/volkovlabs/volkovlabs-form-panel/main/src/img/panel.png)
