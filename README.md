@@ -30,6 +30,58 @@ git remote add origin git@github.com:coding-to-music/grafana-volkovlabs-form-pan
 git push -u origin main
 ```
 
+## Errors in console
+
+```
+yarn install
+yarn build
+yarn start
+```
+
+```
+docker ps
+```
+
+Output
+
+```
+CONTAINER ID   IMAGE                                     COMMAND                  CREATED          STATUS                          PORTS                    NAMES
+1fb38b82ca73   grafana-volkovlabs-form-panel_nginx       "/docker-entrypoint.…"   16 minutes ago   Restarting (1) 41 seconds ago                            nginx
+28fca02b3a1f   grafana-volkovlabs-form-panel_server-pg   "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3002->3001/tcp   server-pg
+c1328a55ec89   grafana-volkovlabs-form-panel_server      "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3001->3001/tcp   server
+0ff9eb0d43f1   ghcr.io/volkovlabs/app:latest             "/bin/bash /entrypoi…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3000->3000/tcp   grafana
+508e94786b35   postgres                                  "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:5432->5432/tcp   postgres
+```
+
+Console error messages
+
+```bash
+nginx        | 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+nginx        | 20-envsubst-on-templates.sh: Running envsubst on /etc/nginx/templates/default.conf.template to /etc/nginx/conf.d/default.conf
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+nginx        | /docker-entrypoint.sh: Configuration complete; ready for start up
+nginx        | 2023/04/19 22:31:40 [emerg] 1#1: host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx        | nginx: [emerg] host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx exited with code 1
+nginx        | 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+nginx        | 20-envsubst-on-templates.sh: Running envsubst on /etc/nginx/templates/default.conf.template to /etc/nginx/conf.d/default.conf
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+nginx        | /docker-entrypoint.sh: Configuration complete; ready for start up
+nginx        | 2023/04/19 22:32:41 [emerg] 1#1: host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx        | nginx: [emerg] host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx exited with code 1
+nginx        | 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+nginx        | 20-envsubst-on-templates.sh: Running envsubst on /etc/nginx/templates/default.conf.template to /etc/nginx/conf.d/default.conf
+nginx        | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+nginx        | /docker-entrypoint.sh: Configuration complete; ready for start up
+nginx        | 2023/04/19 22:33:41 [emerg] 1#1: host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx        | nginx: [emerg] host not found in upstream "host.docker.internal" in /etc/nginx/conf.d/default.conf:7
+nginx exited with code 1
+```
+
 # Data Manipulation Panel for Grafana
 
 ![Form Panel](https://raw.githubusercontent.com/volkovlabs/volkovlabs-form-panel/main/src/img/panel.png)
