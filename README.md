@@ -82,6 +82,13 @@ nginx        | nginx: [emerg] host not found in upstream "host.docker.internal" 
 nginx exited with code 1
 ```
 
+## Solution to restarting nginx
+
+Per: https://github.com/VolkovLabs/volkovlabs-app/issues/62
+
+`host.docker.internal` is reserved for accessing containers on Windows and MacOS, which we use for developing.
+For Linux, the name should be modified to `localhost`
+
 # Data Manipulation Panel for Grafana
 
 ![Form Panel](https://raw.githubusercontent.com/volkovlabs/volkovlabs-form-panel/main/src/img/panel.png)

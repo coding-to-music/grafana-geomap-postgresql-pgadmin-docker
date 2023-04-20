@@ -31,7 +31,8 @@ services:
     build: ./nginx
     restart: always
     environment:
-      - GRAFANA_HOST=host.docker.internal
+      - GRAFANA_HOST=localhost
+      # - GRAFANA_HOST=host.docker.internal
     ports:
       - 80:80/tcp
       - 443:443/tcp
