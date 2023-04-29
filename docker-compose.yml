@@ -63,3 +63,13 @@ services:
       - 443:443/tcp
     depends_on:
       - grafana
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5050:80"
+    restart: always

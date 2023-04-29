@@ -29,6 +29,8 @@
     "upgrade": "yarn upgrade --latest",
     "deploy": "git add . && git commit -m Build && git push",
     "clean": "bash ./purge-all.sh",
+    "simulation": "node ./simulation.js",
+    "loaddata": "node ./simulation.js",
     "watch": "grafana-toolkit plugin:dev --watch"
   },
   "version": "2.8.0"
