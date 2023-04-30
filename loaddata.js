@@ -60,9 +60,8 @@ async function runSimulation() {
 
     // const insertQuery = "COPY ev_locations FROM './ev_locations.csv' WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')";
 
-    // const insertQuery = `COPY ev_locations FROM './ev_locations.csv' WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
-
-    // await pool.query(insertQuery);
+    const insertQuery = `COPY ev_locations FROM './ev_locations.csv' WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
+    await pool.query(insertQuery);
 
 
     // Generate a unique identifier using the current timestamp
