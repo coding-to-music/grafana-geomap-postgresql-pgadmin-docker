@@ -28,13 +28,26 @@ async function runSimulation() {
       Latitude                 varchar(400) NULL,
       Facility_Type            varchar(400) NULL,
       Longitude                varchar(400) NULL
-      );
+      )`;
     await pool.query(createTableQuery);
 
     // Get the number of rows in the "ev_locations" table before inserting a new row
     const countBeforeQuery = 'SELECT COUNT(*) FROM ev_locations';
     const { rows: rowsBefore } = await pool.query(countBeforeQuery);
     console.log(`Number of rows before: ${rowsBefore[0].count}`);
+
+    
+    // const insertQuery = `\copy ev_locations from 'ev_locations.csv' delimiter',' CSV header`;
+    // await pool.query(insertQuery);
+
+    // const insertQuery = "COPY ev_locations FROM 'ev_locations.csv' DELIMITER ',' CSV";
+
+    const insertQuery = "COPY ev_locations \
+    FROM 'ev_locations.csv' \
+    WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '\"')";
+    
+    await pool.query(insertQuery);
+
 
     // Generate a unique identifier using the current timestamp
     // const id = parseInt(Date.now());
@@ -44,7 +57,7 @@ async function runSimulation() {
     // const datetime = new Date().toISOString();
 
     // Insert a new row into the "ev_locations" table with the generated id and current datetime
-    const insertQuery = `INSERT INTO ev_locations (id, mystring, datetime) VALUES ($1, $2, $3)`;
+    // const insertQuery = `INSERT INTO ev_locations (id, mystring, datetime) VALUES ($1, $2, $3)`;
     // const values = [id, mystring, datetime];
     // await pool.query(insertQuery, values);
 
