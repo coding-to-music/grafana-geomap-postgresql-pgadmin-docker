@@ -36,17 +36,33 @@ async function runSimulation() {
     const { rows: rowsBefore } = await pool.query(countBeforeQuery);
     console.log(`Number of rows before: ${rowsBefore[0].count}`);
 
-    
+    console.log(process.cwd());
+
+    const { exec } = require('child_process');
+
+    exec('ls -lh ev_*', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+    });
+
     // const insertQuery = `\copy ev_locations from 'ev_locations.csv' delimiter',' CSV header`;
     // await pool.query(insertQuery);
 
     // const insertQuery = "COPY ev_locations FROM 'ev_locations.csv' DELIMITER ',' CSV";
 
-    const insertQuery = "COPY ev_locations \
-    FROM 'ev_locations.csv' \
-    WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '\"')";
-    
-    await pool.query(insertQuery);
+    // const insertQuery = "COPY ev_locations \
+    // FROM 'ev_locations.csv' \
+    // WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '\"')";
+
+    // const insertQuery = "COPY ev_locations FROM './ev_locations.csv' WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')";
+
+    // const insertQuery = `COPY ev_locations FROM './ev_locations.csv' WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
+
+    // await pool.query(insertQuery);
 
 
     // Generate a unique identifier using the current timestamp
