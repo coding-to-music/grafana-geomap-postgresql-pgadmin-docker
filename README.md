@@ -54,12 +54,13 @@ docker ps
 Output
 
 ```
-CONTAINER ID   IMAGE                                     COMMAND                  CREATED          STATUS                          PORTS                    NAMES
-1fb38b82ca73   grafana-geomap-postgresql-pgadmin-docker_nginx       "/docker-entrypoint.…"   16 minutes ago   Restarting (1) 41 seconds ago                            nginx
-28fca02b3a1f   grafana-geomap-postgresql-pgadmin-docker_server-pg   "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3002->3001/tcp   server-pg
-c1328a55ec89   grafana-geomap-postgresql-pgadmin-docker_server      "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3001->3001/tcp   server
-0ff9eb0d43f1   ghcr.io/volkovlabs/app:latest             "/bin/bash /entrypoi…"   16 minutes ago   Up 15 minutes                   0.0.0.0:3000->3000/tcp   grafana
-508e94786b35   postgres                                  "docker-entrypoint.s…"   16 minutes ago   Up 15 minutes                   0.0.0.0:5432->5432/tcp   postgres
+CONTAINER ID   IMAGE                                                COMMAND                  CREATED          STATUS          PORTS                                      NAMES
+e9b5dc9ec8a2   grafana-geomap-postgresql-pgadmin-docker_nginx       "/docker-entrypoint.…"   28 minutes ago   Up 28 minutes   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
+c145a497f697   grafana-geomap-postgresql-pgadmin-docker_server-pg   "docker-entrypoint.s…"   28 minutes ago   Up 28 minutes   0.0.0.0:3002->3001/tcp                     server-pg
+0dbadae89fd3   ghcr.io/volkovlabs/app:latest                        "/bin/bash /entrypoi…"   28 minutes ago   Up 28 minutes   0.0.0.0:3000->3000/tcp                     grafana
+58a81dcd1372   dpage/pgadmin4:latest                                "/entrypoint.sh"         28 minutes ago   Up 28 minutes   443/tcp, 0.0.0.0:5050->80/tcp              pgadmin
+957bc3911f60   postgres                                             "docker-entrypoint.s…"   28 minutes ago   Up 28 minutes   0.0.0.0:5432->5432/tcp                     postgres
+f638deb174af   grafana-geomap-postgresql-pgadmin-docker_server      "docker-entrypoint.s…"   28 minutes ago   Up 28 minutes   0.0.0.0:3001->3001/tcp                     server
 ```
 
 ## PostgreSQL and pgAdmin
