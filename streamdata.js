@@ -3,7 +3,8 @@ const { Pool } = require("pg");
 const fastcsv = require("fast-csv");
 require('dotenv').config();
 
-let stream = fs.createReadStream("ev_locations.csv");
+// let stream = fs.createReadStream("ev_locations.csv");
+let stream = fs.createReadStream("junk-2.csv");
 let csvData = [];
 let lineCount = 0;
 let csvStream = fastcsv
