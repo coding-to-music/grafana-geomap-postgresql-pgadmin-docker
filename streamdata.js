@@ -1,5 +1,5 @@
 const fs = require("fs");
-const Pool = require("pg").Pool;
+const { Pool } = require("pg");
 const fastcsv = require("fast-csv");
 require('dotenv').config();
 
@@ -14,7 +14,7 @@ let csvStream = fastcsv
   })
   .on("end", function() {
     // remove the first line: header
-    csvData.shift();
+    // csvData.shift();
 
     console.log(`Total number of lines in CSV file: ${lineCount}`);
 
@@ -45,14 +45,24 @@ let csvStream = fastcsv
       )
     `;
 
+    const deleteQuery = `DELETE FROM ev_locations`;
+
     const copyQuery =
-      "TRUNCATE TABLE ev_locations; INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+      "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
     pool.query(createQuery, (err, res) => {
       if (err) {
         console.log(err.stack);
       } else {
         console.log("Table 'ev_locations' created successfully");
+      }
+    });
+
+    pool.query(deleteQuery, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+      } else {
+        console.log(`Deleted ${res.rowCount} rows from 'ev_locations'`);
       }
     });
 
