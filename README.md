@@ -9,6 +9,8 @@ From / By https://github.com/volkovlabs/volkovlabs-form-panel
 
 Data comes from https://github.com/coding-to-music/ev-charging-stations-kaggle
 
+https://volkovlabs.io/blog/how-to-create-your-first-grafana-dashboard-bd0f68d631bd/
+
 pgAdmin and simulation comes from https://github.com/coding-to-music/postgresql-pgadmin-docker-compose
 
 
