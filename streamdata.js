@@ -1,6 +1,7 @@
 const fs = require("fs");
 const Pool = require("pg").Pool;
 const fastcsv = require("fast-csv");
+require('dotenv').config();
 
 let stream = fs.createReadStream("ev_locations.csv");
 let csvData = [];
@@ -30,17 +31,22 @@ let csvStream = fastcsv
     //   port: 5432
     // });
 
-    const copyQuery = `COPY ev_locations FROM STDIN WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
+    // const copyQuery = `COPY ev_locations FROM STDIN WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
 
     // const query =
     //   "INSERT INTO category (id, name, description, created_at) VALUES ($1, $2, $3, $4)";
+
+    // Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude
+
+    const copyQuery =
+      "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
     pool.connect((err, client, done) => {
       if (err) throw err;
 
       try {
         csvData.forEach(row => {
-          client.query(query, row, (err, res) => {
+          client.query(copyQuery, row, (err, res) => {
             if (err) {
               console.log(err.stack);
             } else {
