@@ -33,6 +33,7 @@
     "clean": "bash ./purge-all.sh",
     "simulation": "node ./simulation.js",
     "loaddata": "node ./loaddata.js",
+    "streamdata": "node ./streamdata.js",
     "watch": "grafana-toolkit plugin:dev --watch"
   },
   "version": "2.8.0",
