@@ -13,9 +13,6 @@ let csvStream = fastcsv
     csvData.push(data);
   })
   .on("end", function() {
-    // remove the first line: header
-    // csvData.shift();
-
     console.log(`Total number of lines in CSV file: ${lineCount}`);
 
     // create a new connection to the database
@@ -27,8 +24,10 @@ let csvStream = fastcsv
       port: process.env.POSTGRES_PORT,
     });
 
-    const createQuery = `
-      CREATE TABLE IF NOT EXISTS ev_locations (
+    const dropRecreateQuery = `
+      BEGIN;
+      DROP TABLE IF EXISTS ev_locations;
+      CREATE TABLE ev_locations (
         Fuel_Type_Code VARCHAR(100),
         Station_Name VARCHAR(255),
         Street_Address VARCHAR(255),
@@ -42,40 +41,36 @@ let csvStream = fastcsv
         Latitude VARCHAR(20),
         Facility_Type VARCHAR(100),
         Longitude VARCHAR(20)
-        )
+      );
+      COMMIT;
     `;
-
-    const deleteQuery = `DELETE FROM ev_locations`;
 
     const copyQuery =
       "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
-    pool.query(createQuery, (err, res) => {
+    pool.query(dropRecreateQuery, (err, res) => {
       if (err) {
         console.log(err.stack);
+        return;
       } else {
-        console.log("Table 'ev_locations' created successfully");
-      }
-    });
-
-    pool.query(deleteQuery, (err, res) => {
-      if (err) {
-        console.log(err.stack);
-      } else {
-        console.log(`Deleted ${res.rowCount} rows from 'ev_locations'`);
+        console.log("Table 'ev_locations' dropped and recreated successfully");
       }
     });
 
     let count = 0;
+    let errorCount = 0;
 
     pool.connect((err, client, done) => {
       if (err) throw err;
 
       try {
-        csvData.forEach(row => {
+        csvData.forEach((row, rowIndex) => {
           client.query(copyQuery, row, (err, res) => {
             if (err) {
-              console.log(err.stack);
+              console.log(`Error on row ${rowIndex+1}: ${err.message}`);
+              console.log("Offending row:");
+              console.log(row);
+              errorCount++;
             } else {
               count++;
               if (count % 5000 === 0) {
@@ -91,6 +86,7 @@ let csvStream = fastcsv
           } else {
             console.log(`Total rows in table: ${res.rows[0].count}`);
             console.log(`${count} rows inserted in total`);
+            console.log(`${errorCount} rows had errors`);
           }
 
           done();
