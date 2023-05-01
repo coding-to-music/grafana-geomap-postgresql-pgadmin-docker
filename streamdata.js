@@ -42,7 +42,7 @@ let csvStream = fastcsv
         Latitude VARCHAR(20),
         Facility_Type VARCHAR(100),
         Longitude VARCHAR(20)
-      )
+        )
     `;
 
     const deleteQuery = `DELETE FROM ev_locations`;
