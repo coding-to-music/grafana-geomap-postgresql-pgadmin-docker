@@ -5,28 +5,28 @@ require('dotenv').config();
 
 let stream = fs.createReadStream("ev_locations.csv");
 let csvData = [];
-let lineCount = 0; // Add this line
+let lineCount = 0;
 let csvStream = fastcsv
   .parse()
   .on("data", function(data) {
-    lineCount++; // Add this line
+    lineCount++;
     csvData.push(data);
   })
   .on("end", function() {
     // remove the first line: header
     csvData.shift();
 
-    console.log(`Total number of lines in CSV file: ${lineCount}`); // Add this line
+    console.log(`Total number of lines in CSV file: ${lineCount}`);
 
     // create a new connection to the database
     const pool = new Pool({
-        user: process.env.POSTGRES_USER,
-        host: process.env.POSTGRES_HOST,
-        database: process.env.POSTGRES_DB,
-        password: process.env.POSTGRES_PW,
-        port: process.env.POSTGRES_PORT,
-      });
-    
+      user: process.env.POSTGRES_USER,
+      host: process.env.POSTGRES_HOST,
+      database: process.env.POSTGRES_DB,
+      password: process.env.POSTGRES_PW,
+      port: process.env.POSTGRES_PORT,
+    });
+
     const createQuery = `
       CREATE TABLE IF NOT EXISTS ev_locations (
         Fuel_Type_Code VARCHAR(100),
@@ -46,7 +46,7 @@ let csvStream = fastcsv
     `;
 
     const copyQuery =
-      "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+      "TRUNCATE TABLE ev_locations; INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
     pool.query(createQuery, (err, res) => {
       if (err) {
@@ -68,20 +68,19 @@ let csvStream = fastcsv
               console.log(err.stack);
             } else {
               count++;
-              if (count % 1000 === 0) {
+              if (count % 5000 === 0) {
                 console.log(`${count} rows inserted`);
               }
             }
           });
         });
       } finally {
-        console.log(`${count} rows inserted in total`);
-
         client.query("SELECT COUNT(*) FROM ev_locations", (err, res) => {
           if (err) {
             console.log(err.stack);
           } else {
             console.log(`Total rows in table: ${res.rows[0].count}`);
+            console.log(`${count} rows inserted in total`);
           }
 
           done();
