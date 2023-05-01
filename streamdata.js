@@ -3,8 +3,8 @@ const { Pool } = require("pg");
 const fastcsv = require("fast-csv");
 require('dotenv').config();
 
-// let stream = fs.createReadStream("ev_locations.csv");
-let stream = fs.createReadStream("junk-2.csv");
+let stream = fs.createReadStream("ev_locations.csv");
+// let stream = fs.createReadStream("junk-2.csv");
 let csvData = [];
 let lineCount = 0;
 let csvStream = fastcsv
@@ -39,15 +39,15 @@ let csvStream = fastcsv
         Status_Code VARCHAR(20),
         Groups_With_Access_Code VARCHAR(255),
         Access_Days_Time VARCHAR(255),
-        Latitude VARCHAR(20),
-        Facility_Type VARCHAR(100),
-        Longitude VARCHAR(20)
+        Latitude DECIMAL(20, 10),
+        Longitude DECIMAL(20, 10),
+        Facility_Type VARCHAR(100)
       );
       COMMIT;
     `;
 
     const copyQuery =
-      "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Facility_Type, Longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+      "INSERT INTO ev_locations (Fuel_Type_Code, Station_Name, Street_Address, City, State, ZIP, Plus4, Status_Code, Groups_With_Access_Code, Access_Days_Time, Latitude, Longitude, Facility_Type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $13, $12)";
 
     pool.query(dropRecreateQuery, (err, res) => {
       if (err) {
@@ -69,7 +69,8 @@ let csvStream = fastcsv
           client.query(copyQuery, row, (err, res) => {
             if (err) {
               console.log(`Error on row ${rowIndex+1}: ${err.message}`);
-              console.log("Offending row:");
+              const targetColumnName = Object.keys(err.fields || {}).find(key => err.fields[key] !== undefined);
+              console.log(`Offending row for ${targetColumnName}:`);
               console.log(row);
               errorCount++;
             } else {
