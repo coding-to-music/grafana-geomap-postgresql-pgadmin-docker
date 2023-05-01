@@ -15,15 +15,25 @@ let csvStream = fastcsv
 
     // create a new connection to the database
     const pool = new Pool({
-      host: "localhost",
-      user: "postgres",
-      database: "testdb",
-      password: "123",
-      port: 5432
-    });
+        user: process.env.POSTGRES_USER,
+        host: process.env.POSTGRES_HOST,
+        database: process.env.POSTGRES_DB,
+        password: process.env.POSTGRES_PW,
+        port: process.env.POSTGRES_PORT,
+      });
+    
+    // const pool = new Pool({
+    //   host: "localhost",
+    //   user: "postgres",
+    //   database: "testdb",
+    //   password: "123",
+    //   port: 5432
+    // });
 
-    const query =
-      "INSERT INTO category (id, name, description, created_at) VALUES ($1, $2, $3, $4)";
+    const copyQuery = `COPY ev_locations FROM STDIN WITH (FORMAT csv, DELIMITER ',', HEADER false, QUOTE '"')`;
+
+    // const query =
+    //   "INSERT INTO category (id, name, description, created_at) VALUES ($1, $2, $3, $4)";
 
     pool.connect((err, client, done) => {
       if (err) throw err;
